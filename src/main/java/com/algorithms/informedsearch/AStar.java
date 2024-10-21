@@ -7,7 +7,7 @@ import java.util.*;
 
 public class AStar {
     private static final PriorityQueue<Node> uncheckedStates = new PriorityQueue<>(Comparator.comparing(Node::getHeuristicValue));
-    private static final List<Node> checkedStates = new ArrayList<>();
+    private static final Set<Board> checkedStates = new HashSet<>();
 
     public static Node search(Board initialBoard) {
         Node initialState = new Node(initialBoard, null, new ArrayList<>());
@@ -19,16 +19,17 @@ public class AStar {
             if (manhattanDistance(currentState.getCurrentBoard().getBoard()) == 0) {
                 break;
             }
-            if (checkedStates.contains(currentState)) {
+            if (checkedStates.contains(currentState.getCurrentBoard())) {
                 continue;
             }
             currentState.generateChildren();
             currentState.getChildren().forEach(s -> {
                 s.setHeuristicValue(s.getDepth() + manhattanDistance(s.getCurrentBoard().getBoard()));
+                if (!checkedStates.contains(s.getCurrentBoard())) {
+                    uncheckedStates.add(s);
+                }
             });
-            uncheckedStates.addAll(currentState.getChildren());
-            checkedStates.add(currentState);
-            uncheckedStates.remove(currentState);
+            checkedStates.add(currentState.getCurrentBoard());
         }
         assert currentState != null;
         return currentState;

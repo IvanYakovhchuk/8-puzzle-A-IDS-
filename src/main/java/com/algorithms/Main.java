@@ -7,13 +7,10 @@ import com.algorithms.puzzle.Node;
 public class Main {
     public static void main(String[] args) {
         Board myBoard = new Board();
-        myBoard.generateBoard();
-        if (!myBoard.isSolvable()) {
-            System.out.println("Puzzle can't be solved: number of inversions is odd!");
-        }
-        else {
-            Node goalState = AStar.search(myBoard);
-            AStar.printSolution(goalState);
-        }
+        do {
+            myBoard.generateBoard();
+        } while (!myBoard.isSolvable());
+        Node goalState = AStar.search(myBoard);
+        AStar.printSolution(goalState);
     }
 }
