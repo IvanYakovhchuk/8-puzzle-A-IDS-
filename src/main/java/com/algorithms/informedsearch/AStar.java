@@ -34,7 +34,7 @@ public class AStar {
         return currentState;
     }
 
-    public static int manhattanDistance(int[][] board) {
+    private static int manhattanDistance(int[][] board) {
         int distance = 0;
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
