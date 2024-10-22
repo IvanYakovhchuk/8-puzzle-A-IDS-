@@ -1,19 +1,19 @@
 package com.algorithms.informedsearch;
 
 import com.algorithms.puzzle.Board;
-import com.algorithms.puzzle.Node;
+import com.algorithms.puzzle.State;
 
 import java.util.*;
 
 public class AStar {
-    private static final PriorityQueue<Node> uncheckedStates = new PriorityQueue<>(Comparator.comparing(Node::getHeuristicValue));
+    private static final PriorityQueue<State> uncheckedStates = new PriorityQueue<>(Comparator.comparing(State::getHeuristicValue));
     private static final Set<Board> checkedStates = new HashSet<>();
 
-    public static Node search(Board initialBoard) {
-        Node initialState = new Node(initialBoard, null, new ArrayList<>());
+    public static State search(Board initialBoard) {
+        State initialState = new State(initialBoard, null, new ArrayList<>());
         initialState.setHeuristicValue(initialState.getDepth() + manhattanDistance(initialState.getCurrentBoard().getBoard()));
         uncheckedStates.add(initialState);
-        Node currentState = null;
+        State currentState = null;
         while (!uncheckedStates.isEmpty()) {
             currentState = uncheckedStates.poll();
             if (manhattanDistance(currentState.getCurrentBoard().getBoard()) == 0) {
@@ -31,7 +31,6 @@ public class AStar {
             });
             checkedStates.add(currentState.getCurrentBoard());
         }
-        assert currentState != null;
         return currentState;
     }
 
@@ -53,24 +52,4 @@ public class AStar {
 
         return distance;
     }
-
-    public static void printSolution(Node finalState) {
-        List<Board> solutionPath = new ArrayList<>();
-        Node current = finalState;
-
-        while (current != null) {
-            solutionPath.add(current.getCurrentBoard());
-            current = current.getParent();
-        }
-
-        Collections.reverse(solutionPath);
-
-        for (Board board : solutionPath) {
-            board.printBoard();
-            System.out.println("  | ");
-            System.out.println("  | ");
-            System.out.println(" \\'/ \n");
-        }
-    }
-
 }

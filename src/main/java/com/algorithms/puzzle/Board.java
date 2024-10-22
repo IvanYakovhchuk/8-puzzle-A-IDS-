@@ -5,6 +5,9 @@ import java.util.*;
 public class Board {
 
     private int[][] board = new int[3][3];
+    public static final String RESET = "\u001B[0m";
+    public static final String RED = "\u001B[31m";
+    public static final String GREEN = "\u001B[32m";
 
     public Board() {}
     public Board(int[][] board) {
@@ -22,8 +25,51 @@ public class Board {
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
                 Collections.shuffle(list);
-                board[row][col] = list.getFirst();
-                list.removeFirst();
+                board[row][col] = list.removeFirst();
+            }
+        }
+    }
+    public void inputBoard() {
+        boolean isValidInput = false;
+        try(Scanner scanner = new Scanner(System.in)) {
+            while (!isValidInput) {
+                System.out.println("""
+                    Print your board like the following:
+
+                    Matrix:
+                        1  2  3
+                        4  5  6
+                        7  8  9
+
+                    Input: 1 2 3 4 5 6 7 8 9""");
+                List<Integer> list;
+                try {
+                    list = new ArrayList<>(
+                            Arrays.stream(scanner.nextLine()
+                                            .split(" "))
+                                    .toList()
+                                    .stream().map(Integer::parseInt)
+                                    .toList()
+                    );
+                } catch (Exception e) {
+                    System.out.println("Invalid input! Please try again.");
+                    continue;
+                }
+                List<Integer> correctList = new ArrayList<>(List.of(0, 1, 2, 3, 4, 5, 6, 7, 8));
+                if (list.retainAll(correctList)) {
+                    System.out.println("8-puzzle game can only contain puzzles from 0 to 8 where 0 is empty tile! Please create another puzzle!");
+                    continue;
+                }
+                for (int row = 0; row < 3; row++) {
+                    for (int col = 0; col < 3; col++) {
+                        board[row][col] = list.removeFirst();
+                    }
+                }
+                if (!this.isSolvable()) {
+                    System.out.println("The puzzle isn't solvable! Please create another puzzle.");
+                    continue;
+                }
+                isValidInput = true;
             }
         }
     }
@@ -140,19 +186,26 @@ public class Board {
         return oneDimensionalArray;
     }
 
-    public void printBoard() {
+    public void printBoard(int[] lastZeroPosition, int[] nextMovePosition) {
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                if (board[i][j] != 0) {
-                    System.out.printf("%d  ", this.getBoard()[i][j]);
+                if (i == nextMovePosition[0] && j == nextMovePosition[1]) {
+                    System.out.print(RED + board[i][j] + "  " + RESET);
+                }
+                else if (board[i][j] == 0) {
+                    System.out.print("   ");
+                }
+                else if (i == lastZeroPosition[0] && j == lastZeroPosition[1]) {
+                    System.out.print(GREEN + board[i][j] + "  " + RESET);
                 }
                 else {
-                    System.out.print("   ");
+                    System.out.printf("%d  ", board[i][j]);
                 }
             }
             System.out.println();
         }
     }
+
 
     @Override
     public boolean equals(Object obj) {
