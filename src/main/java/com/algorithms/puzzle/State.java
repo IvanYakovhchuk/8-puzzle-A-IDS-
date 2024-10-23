@@ -10,7 +10,7 @@ public class State {
     private final State parent;
     private final int depth;
     private int heuristicValue;
-    private final List<State> children;
+    public List<State> children;
 
     public State(Board currentState, State parent, List<State> children) {
         this.currentBoard = currentState;
@@ -88,7 +88,6 @@ public class State {
 
         solutionPath.forEach(s -> {
             int[] nextMovePosition = {-1, -1};
-            int nextMoveValue = 0;
             if (solutionPath.indexOf(s) < solutionPath.size() - 1) {
                 nextMovePosition = solutionPath.get(solutionPath.indexOf(s) + 1).findZeroPosition();
             }

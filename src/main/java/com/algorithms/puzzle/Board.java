@@ -29,11 +29,10 @@ public class Board {
             }
         }
     }
-    public void inputBoard() {
+    public void inputBoard(Scanner scanner) {
         boolean isValidInput = false;
-        try(Scanner scanner = new Scanner(System.in)) {
-            while (!isValidInput) {
-                System.out.println("""
+        while (!isValidInput) {
+            System.out.println("""
                     Print your board like the following:
 
                     Matrix:
@@ -42,35 +41,34 @@ public class Board {
                         7  8  9
 
                     Input: 1 2 3 4 5 6 7 8 9""");
-                List<Integer> list;
-                try {
-                    list = new ArrayList<>(
-                            Arrays.stream(scanner.nextLine()
-                                            .split(" "))
-                                    .toList()
-                                    .stream().map(Integer::parseInt)
-                                    .toList()
-                    );
-                } catch (Exception e) {
-                    System.out.println("Invalid input! Please try again.");
-                    continue;
-                }
-                List<Integer> correctList = new ArrayList<>(List.of(0, 1, 2, 3, 4, 5, 6, 7, 8));
-                if (list.retainAll(correctList)) {
-                    System.out.println("8-puzzle game can only contain puzzles from 0 to 8 where 0 is empty tile! Please create another puzzle!");
-                    continue;
-                }
-                for (int row = 0; row < 3; row++) {
-                    for (int col = 0; col < 3; col++) {
-                        board[row][col] = list.removeFirst();
-                    }
-                }
-                if (!this.isSolvable()) {
-                    System.out.println("The puzzle isn't solvable! Please create another puzzle.");
-                    continue;
-                }
-                isValidInput = true;
+            List<Integer> list;
+            try {
+                list = new ArrayList<>(
+                        Arrays.stream(scanner.nextLine()
+                                        .split(" "))
+                                .toList()
+                                .stream().map(Integer::parseInt)
+                                .toList()
+                );
+            } catch (Exception e) {
+                System.out.println("Invalid input! Please try again.");
+                continue;
             }
+            List<Integer> correctList = new ArrayList<>(List.of(0, 1, 2, 3, 4, 5, 6, 7, 8));
+            if (list.retainAll(correctList)) {
+                System.out.println("8-puzzle game can only contain puzzles from 0 to 8 where 0 is empty tile! Please create another puzzle!");
+                continue;
+            }
+            for (int row = 0; row < 3; row++) {
+                for (int col = 0; col < 3; col++) {
+                    board[row][col] = list.removeFirst();
+                }
+            }
+            if (!this.isSolvable()) {
+                System.out.println("The puzzle isn't solvable! Please create another puzzle.");
+                continue;
+            }
+            isValidInput = true;
         }
     }
 
