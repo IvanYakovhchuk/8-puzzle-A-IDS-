@@ -14,11 +14,8 @@ public class IterativeDepthSearch {
 
     private static final Set<Board> processedStates = new LinkedHashSet<>();
 
-    private static int maxDepthReached = 0;
-
     public static State IDDFS(Board initialState, int maxDepth) {
         for (int depth = 1; depth <= maxDepth; depth++) {
-            maxDepthReached = Math.max(maxDepthReached, depth); // Update max depth
             State result = DLS(new State(initialState, null, null), depth);
             if (result != null) {
                 return result;
