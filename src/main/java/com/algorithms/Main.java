@@ -5,15 +5,12 @@ import com.algorithms.puzzle.Board;
 import com.algorithms.puzzle.State;
 import com.algorithms.uninformedsearch.IterativeDepthSearch;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Scanner;
 
 import static com.algorithms.puzzle.State.printSolution;
 
 public class Main {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         Board myBoard = new Board();
         State result = null;
 
