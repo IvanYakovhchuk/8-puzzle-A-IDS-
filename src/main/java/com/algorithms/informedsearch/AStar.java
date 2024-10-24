@@ -31,6 +31,7 @@ public class AStar {
             });
             checkedStates.add(currentState.getCurrentBoard());
         }
+        checkedStates.clear();
         return currentState;
     }
 

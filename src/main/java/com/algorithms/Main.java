@@ -60,7 +60,6 @@ public class Main {
                     } else {
                         System.out.println("Can't find goal state");
                     }
-
                 } while (!cond);
 
                 System.out.println("Do you want to continue? (y/n)");

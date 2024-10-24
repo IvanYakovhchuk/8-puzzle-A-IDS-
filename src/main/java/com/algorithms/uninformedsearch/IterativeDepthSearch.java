@@ -41,13 +41,15 @@ public class IterativeDepthSearch {
             node.generateChildren();
             processedStates.add(node.getCurrentBoard());
         }
-
-        for (State child : node.getChildren()) {
-            State found = DLS(child, depth - 1);
-            if (found != null) {
-                return found;
+        if (node.getChildren() != null) {
+            for (State child : node.getChildren()) {
+                State found = DLS(child, depth - 1);
+                if (found != null) {
+                    return found;
+                }
             }
         }
+
         return null;
     }
 }
