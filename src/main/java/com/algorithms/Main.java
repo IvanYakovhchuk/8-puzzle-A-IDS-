@@ -5,9 +5,10 @@ import com.algorithms.puzzle.Board;
 import com.algorithms.puzzle.State;
 import com.algorithms.uninformedsearch.IterativeDepthSearch;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Scanner;
-
-import static com.algorithms.puzzle.State.printSolution;
 
 public class Main {
     public static void main(String[] args) {
@@ -67,5 +68,34 @@ public class Main {
                 cond = input.equalsIgnoreCase("y");
             } while (cond);
         }
+    }
+
+    public static void printSolution(State finalState) {
+        List<State> solutionPath = new ArrayList<>();
+        State current = finalState;
+
+        while (current != null) {
+            solutionPath.add(current);
+            current = current.getParent();
+        }
+
+        Collections.reverse(solutionPath);
+
+        solutionPath.forEach(s -> {
+            int[] nextMovePosition = {-1, -1};
+            if (solutionPath.indexOf(s) < solutionPath.size() - 1) {
+                nextMovePosition = solutionPath.get(solutionPath.indexOf(s) + 1).findZeroPosition();
+            }
+            s.getCurrentBoard().printBoard(s.findLastZeroPosition(), nextMovePosition);
+            if (!(solutionPath.getLast() == s)) {
+                System.out.println();
+                System.out.println("   | ");
+                System.out.println("   | ");
+                System.out.println("  \\'/ \n");
+            }
+            else {
+                System.out.println("\u001B[33m"+"\nCongratulations! You solved the puzzle!"+"\u001B[0m");
+            }
+        });
     }
 }

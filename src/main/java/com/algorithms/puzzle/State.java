@@ -1,7 +1,6 @@
 package com.algorithms.puzzle;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class State {
@@ -19,7 +18,7 @@ public class State {
         this.children = children;
     }
 
-    private int[] findLastZeroPosition() {
+    public int[] findLastZeroPosition() {
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
                 if (parent != null && parent.getCurrentBoard().getBoard()[row][col] == 0) {
@@ -30,7 +29,7 @@ public class State {
         return new int[] { -1, -1 };
     }
 
-    private int[] findZeroPosition() {
+    public int[] findZeroPosition() {
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
                 if (parent != null && currentBoard.getBoard()[row][col] == 0) {
@@ -73,34 +72,5 @@ public class State {
         if (!currentBoard.equals(currentBoard.moveDownTile())) {
             children.add(new State(currentBoard.moveDownTile(), this, new ArrayList<>()));
         }
-    }
-
-    public static void printSolution(State finalState) {
-        List<State> solutionPath = new ArrayList<>();
-        State current = finalState;
-
-        while (current != null) {
-            solutionPath.add(current);
-            current = current.getParent();
-        }
-
-        Collections.reverse(solutionPath);
-
-        solutionPath.forEach(s -> {
-            int[] nextMovePosition = {-1, -1};
-            if (solutionPath.indexOf(s) < solutionPath.size() - 1) {
-                nextMovePosition = solutionPath.get(solutionPath.indexOf(s) + 1).findZeroPosition();
-            }
-            s.getCurrentBoard().printBoard(s.findLastZeroPosition(), nextMovePosition);
-            if (!(solutionPath.getLast() == s)) {
-                System.out.println();
-                System.out.println("   | ");
-                System.out.println("   | ");
-                System.out.println("  \\'/ \n");
-            }
-            else {
-                System.out.println("\u001B[33m"+"\nCongratulations! You solved the puzzle!"+"\u001B[0m");
-            }
-        });
     }
 }
