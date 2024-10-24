@@ -99,7 +99,7 @@ public class State {
                 System.out.println("  \\'/ \n");
             }
             else {
-                System.out.println("\u001B[33m"+"\nCongratulations! You solved the puzzle!");
+                System.out.println("\u001B[33m"+"\nCongratulations! You solved the puzzle!"+"\u001B[0m");
             }
         });
     }
